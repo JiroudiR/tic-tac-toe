@@ -26,19 +26,27 @@ public class GameManager : MonoBehaviour
 
     public void GameButtonClicked(GameObject clickedButton)
     {
-        Image buttonImage = GetComponent<Image>();
-        if (currentPlayer == Player.X)
-        {
-            buttonImage.sprite = xSprite;
-            currentPlayer = Player.O;
-        }
-        else
-        {
-            buttonImage.sprite = oSprite;
-            currentPlayer = Player.X;
-        }
+        GameButton gameButton = clickedButton.GetComponent<GameButton>();
+        int row = gameButton.row;
+        int col = gameButton.col;
+        Debug.Log($"Row: {row}; Col: {col}");
+        Image buttonImage = clickedButton.GetComponent<Image>();
         Color buttonColor = buttonImage.color;
         buttonColor.a = 1;
         buttonImage.color = buttonColor;
+        if (buttonImage.sprite == null)
+        {
+            if (currentPlayer == Player.X)
+            {
+                buttonImage.sprite = xSprite;
+                Debug.Log("Anything");
+                currentPlayer = Player.O;
+            }
+            else
+            {
+                buttonImage.sprite = oSprite;
+                currentPlayer = Player.X;
+            }
+        }
     }
 }
