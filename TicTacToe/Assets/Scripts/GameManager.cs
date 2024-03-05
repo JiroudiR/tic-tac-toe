@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public Sprite xSprite;
     public Sprite oSprite;
     private Player currentPlayer;
+    private int xWins;
+    private int oWins;
+    private int draws;
     // Start is called before the first frame update
     void Start()
     {
