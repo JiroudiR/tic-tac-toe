@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    GameObject[] gameButtons;
+    public GameObject[] gameButtons;
     
     public void LoadSceneByName(string name)
     {
@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
         {
             Image buttonImage = gameButton.GetComponent<Image>();
             Color buttonColor = buttonImage.color;
-            buttonColor.a = 1;
+            buttonColor.a = 0;
             buttonImage.color = buttonColor;
         }
     }

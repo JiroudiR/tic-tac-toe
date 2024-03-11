@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     private Player currentPlayer;
     private Player[,] squares = new Player[GRID_SIZE,GRID_SIZE];
     private int numTurns;
+    private bool gameOver;
     // Start is called before the first frame update
     void Start()
     {
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckWin()
     {
-        bool gameOver = false;
+        gameOver = false;
         //Check each row to see if player has won
         int row = 0;
         while (row < squares.GetLength(0) && !gameOver)
@@ -87,7 +88,19 @@ public class GameManager : MonoBehaviour
             row++;
         }
         //Check each column to see if player has won
-
+        if (!gameOver)
+        {
+            int col = 0;
+            while (col < squares.GetLength(1) && !gameOver)
+            {
+                if (CheckCol(col))
+                {
+                    Debug.Log(currentPlayer + " Wins!");
+                    gameOver = true;
+                }
+                col++;
+            }
+        }
         //Check diagonals to see if player has won
         if (!gameOver)
         {
@@ -124,6 +137,19 @@ public class GameManager : MonoBehaviour
     {
         bool victory = true;
         for (int col = 0; col < squares.GetLength(1); col++)
+        {
+            if (squares[row, col] != currentPlayer)
+            {
+                victory = false;
+            }
+        }
+        return victory;
+    }
+
+    private bool CheckCol(int col)
+    {
+        bool victory = true;
+        for (int row = 0; row < squares.GetLength(0); row++)
         {
             if (squares[row, col] != currentPlayer)
             {
