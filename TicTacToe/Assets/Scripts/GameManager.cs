@@ -16,60 +16,74 @@ public class GameManager : MonoBehaviour
     private Player[,] squares = new Player[GRID_SIZE,GRID_SIZE];
     private int numTurns;
     private bool gameOver;
+    public GameObject xWinsUI;
+    public GameObject oWinsUI;
+    public GameObject catsGameUI;
+    public int xWins = 0;
+    public int oWins = 0;
+    public int draws = 0;
     // Start is called before the first frame update
     void Start()
     {
         NewGame();
     }
 
-    private void NewGame()
+    public void NewGame()
     {
+        // Reset User Interface
+        FindObjectOfType<UIManager>().ResetGameButtons();
+        // Initialize our game variables
+        gameOver = false;
         numTurns = 0;
         currentPlayer = Player.X;
-        for (int row = 0; row < squares.GetLength(0); row++)
-        {
-            for (int col = 0; col < squares.GetLength(1); col++)
-            {
-                squares[row, col] = Player.Empty;
-                Debug.Log($"Row: {row} Col: {col} {squares[row,col]}");
-            }
-        }
+        // Sets the data to empty
+        InitializeData();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+
+    }
+
+    private void InitializeData()
+    {
+        for (int row = 0; row < squares.GetLength(0); row++)
         {
-            FindObjectOfType<UIManager>().ResetGameButtons();
-            NewGame();
+            for (int col = 0; col < squares.GetLength(1); col++)
+            {
+                squares[row, col] = Player.Empty;
+            }
         }
     }
 
     public void GameButtonClicked(GameObject clickedButton)
     {
-        GameButton gameButton = clickedButton.GetComponent<GameButton>();
-        int row = gameButton.row;
-        int col = gameButton.col;
-        Image buttonImage = clickedButton.GetComponent<Image>();
-        Color buttonColor = buttonImage.color;
-        buttonColor.a = 1;
-        buttonImage.color = buttonColor;
-        if (buttonImage.sprite == null)
+        if (!gameOver)
         {
-            numTurns++;
-            if (currentPlayer == Player.X)
+            GameButton gameButton = clickedButton.GetComponent<GameButton>();
+            int row = gameButton.row;
+            int col = gameButton.col;
+            Image buttonImage = clickedButton.GetComponent<Image>();
+            Color buttonColor = buttonImage.color;
+            buttonColor.a = 1;
+            buttonImage.color = buttonColor;
+            if (buttonImage.sprite == null)
             {
-                buttonImage.sprite = xSprite;
-                squares[row, col] = Player.X;
+                numTurns++;
+                if (currentPlayer == Player.X)
+                {
+                    buttonImage.sprite = xSprite;
+                    squares[row, col] = Player.X;
+                }
+                else
+                {
+                    buttonImage.sprite = oSprite;
+                    squares[row, col] = Player.O;
+                }
+                CheckWin();
+                currentPlayer = 1 - currentPlayer;
             }
-            else
-            {
-                buttonImage.sprite = oSprite;
-                squares[row, col] = Player.O;
-            }
-            CheckWin();
-            currentPlayer = 1 - currentPlayer;
         }
     }
 
@@ -82,10 +96,18 @@ public class GameManager : MonoBehaviour
         {
             if (CheckRow(row))
             {
-                Debug.Log(currentPlayer + " Wins!");
-                gameOver = true;
+                GameOver(currentPlayer);
             }
             row++;
+            if (currentPlayer == Player.X && gameOver)
+            {
+                xWins++;
+                xWinsUI.SetActive(true);
+            } else if (currentPlayer == Player.O && gameOver)
+            {
+                oWins++;
+                oWinsUI.SetActive(true);
+            }
         }
         //Check each column to see if player has won
         if (!gameOver)
@@ -95,10 +117,19 @@ public class GameManager : MonoBehaviour
             {
                 if (CheckCol(col))
                 {
-                    Debug.Log(currentPlayer + " Wins!");
-                    gameOver = true;
+                    GameOver(currentPlayer);
                 }
                 col++;
+            }
+            if (currentPlayer == Player.X && gameOver)
+            {
+                xWins++;
+                xWinsUI.SetActive(true);
+            }
+            else if (currentPlayer == Player.O && gameOver)
+            {
+                oWins++;
+                oWinsUI.SetActive(true);
             }
         }
         //Check diagonals to see if player has won
@@ -108,8 +139,17 @@ public class GameManager : MonoBehaviour
             && squares[1, 1] == currentPlayer
             && squares[2, 2] == currentPlayer)
             {
-                Debug.Log(currentPlayer + " Wins!");
-                gameOver = true;
+                GameOver(currentPlayer);
+            }
+            if (currentPlayer == Player.X && gameOver)
+            {
+                xWins++;
+                xWinsUI.SetActive(true);
+            }
+            else if (currentPlayer == Player.O && gameOver)
+            {
+                oWins++;
+                oWinsUI.SetActive(true);
             }
         }
         if (!gameOver)
@@ -118,8 +158,17 @@ public class GameManager : MonoBehaviour
             && squares[1, 1] == currentPlayer
             && squares[2, 0] == currentPlayer)
             {
-                Debug.Log(currentPlayer + " Wins!");
-                gameOver = true;
+                GameOver(currentPlayer);
+            }
+            if (currentPlayer == Player.X && gameOver)
+            {
+                xWins++;
+                xWinsUI.SetActive(true);
+            }
+            else if (currentPlayer == Player.O && gameOver)
+            {
+                oWins++;
+                oWinsUI.SetActive(true);
             }
         }
         //Check for cats game
@@ -127,8 +176,9 @@ public class GameManager : MonoBehaviour
         {
             if (numTurns == 9)
             {
-                Debug.Log("Cats Game");
-                gameOver = true;
+                draws++;
+                GameOver(Player.Empty);
+                catsGameUI.SetActive(true);
             }
         }
     }
@@ -157,5 +207,11 @@ public class GameManager : MonoBehaviour
             }
         }
         return victory;
+    }
+
+    private void GameOver(Player winner)
+    {
+        FindObjectOfType<UIManager>().UpdateWins();
+        gameOver = true;
     }
 }
