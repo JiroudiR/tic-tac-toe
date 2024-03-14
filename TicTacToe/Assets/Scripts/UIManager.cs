@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text xWinsLabel;
     public TMP_Text oWinsLabel;
     public TMP_Text drawsLabel;
+    public TMP_Text turnLabel;
     
     public void LoadSceneByName(string name)
     {
@@ -40,5 +41,10 @@ public class UIManager : MonoBehaviour
         xWinsLabel.text = $"X Wins: {FindObjectOfType<GameManager>().xWins}";
         oWinsLabel.text = $"O Wins: {FindObjectOfType<GameManager>().oWins}";
         drawsLabel.text = $"Draws: {FindObjectOfType<GameManager>().draws}";
+    }
+
+    public void UpdateTurn()
+    {
+        turnLabel.text = $"It is now {FindObjectOfType<GameManager>().CheckTurn()} turn.";
     }
 }

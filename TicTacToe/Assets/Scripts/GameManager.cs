@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject xWinsUI;
     public GameObject oWinsUI;
     public GameObject catsGameUI;
+    public GameObject turnLabel;
     public int xWins = 0;
     public int oWins = 0;
     public int draws = 0;
@@ -36,6 +37,9 @@ public class GameManager : MonoBehaviour
         gameOver = false;
         numTurns = 0;
         currentPlayer = Player.X;
+        // Activates the turnLabel
+        turnLabel.SetActive(true);
+        FindObjectOfType<UIManager>().UpdateTurn();
         // Sets the data to empty
         InitializeData();
     }
@@ -68,6 +72,7 @@ public class GameManager : MonoBehaviour
             Color buttonColor = buttonImage.color;
             buttonColor.a = 1;
             buttonImage.color = buttonColor;
+            
             if (buttonImage.sprite == null)
             {
                 numTurns++;
@@ -82,7 +87,11 @@ public class GameManager : MonoBehaviour
                     squares[row, col] = Player.O;
                 }
                 CheckWin();
-                currentPlayer = 1 - currentPlayer;
+                if(!gameOver)
+                {
+                    currentPlayer = 1 - currentPlayer;
+                    FindObjectOfType<UIManager>().UpdateTurn(); 
+                }
             }
         }
     }
@@ -96,18 +105,16 @@ public class GameManager : MonoBehaviour
         {
             if (CheckRow(row))
             {
-                GameOver(currentPlayer);
+                if (currentPlayer == Player.X)
+                {
+                    GameOver(Player.X);
+                }
+                else if (currentPlayer == Player.O)
+                {
+                    GameOver(Player.O);
+                }
             }
             row++;
-            if (currentPlayer == Player.X && gameOver)
-            {
-                xWins++;
-                xWinsUI.SetActive(true);
-            } else if (currentPlayer == Player.O && gameOver)
-            {
-                oWins++;
-                oWinsUI.SetActive(true);
-            }
         }
         //Check each column to see if player has won
         if (!gameOver)
@@ -117,19 +124,16 @@ public class GameManager : MonoBehaviour
             {
                 if (CheckCol(col))
                 {
-                    GameOver(currentPlayer);
+                    if (currentPlayer == Player.X)
+                    {
+                        GameOver(Player.X);
+                    }
+                    else if (currentPlayer == Player.O)
+                    {
+                        GameOver(Player.O);
+                    }
                 }
                 col++;
-            }
-            if (currentPlayer == Player.X && gameOver)
-            {
-                xWins++;
-                xWinsUI.SetActive(true);
-            }
-            else if (currentPlayer == Player.O && gameOver)
-            {
-                oWins++;
-                oWinsUI.SetActive(true);
             }
         }
         //Check diagonals to see if player has won
@@ -139,17 +143,14 @@ public class GameManager : MonoBehaviour
             && squares[1, 1] == currentPlayer
             && squares[2, 2] == currentPlayer)
             {
-                GameOver(currentPlayer);
-            }
-            if (currentPlayer == Player.X && gameOver)
-            {
-                xWins++;
-                xWinsUI.SetActive(true);
-            }
-            else if (currentPlayer == Player.O && gameOver)
-            {
-                oWins++;
-                oWinsUI.SetActive(true);
+                if (currentPlayer == Player.X)
+                {
+                    GameOver(Player.X);
+                }
+                else if (currentPlayer == Player.O)
+                {
+                    GameOver(Player.O);
+                }
             }
         }
         if (!gameOver)
@@ -158,17 +159,13 @@ public class GameManager : MonoBehaviour
             && squares[1, 1] == currentPlayer
             && squares[2, 0] == currentPlayer)
             {
-                GameOver(currentPlayer);
-            }
-            if (currentPlayer == Player.X && gameOver)
-            {
-                xWins++;
-                xWinsUI.SetActive(true);
-            }
-            else if (currentPlayer == Player.O && gameOver)
-            {
-                oWins++;
-                oWinsUI.SetActive(true);
+                if (currentPlayer == Player.X)
+                {
+                    GameOver(Player.X);
+                } else if (currentPlayer == Player.O)
+                {
+                    GameOver(Player.O);
+                }
             }
         }
         //Check for cats game
@@ -209,9 +206,37 @@ public class GameManager : MonoBehaviour
         return victory;
     }
 
+    public string CheckTurn()
+    {
+        if (gameOver)
+        {
+            turnLabel.SetActive(false);
+        }
+        if (currentPlayer == Player.X)
+        {
+            return "X's";
+        } else if (currentPlayer == Player.O)
+        {
+            return "O's";
+        }
+        return null;
+    }
+
     private void GameOver(Player winner)
     {
-        FindObjectOfType<UIManager>().UpdateWins();
         gameOver = true;
+        turnLabel.SetActive(false);
+        
+        if (winner == Player.X && gameOver)
+        {
+            xWins++;
+            xWinsUI.SetActive(true);
+        }
+        else if (winner == Player.O && gameOver)
+        {
+            oWins++;
+            oWinsUI.SetActive(true);
+        }
+        FindObjectOfType<UIManager>().UpdateWins();
     }
 }

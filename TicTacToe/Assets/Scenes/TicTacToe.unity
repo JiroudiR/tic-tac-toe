@@ -464,6 +464,7 @@ MonoBehaviour:
   xWinsLabel: {fileID: 844887659}
   oWinsLabel: {fileID: 923472941}
   drawsLabel: {fileID: 1007575195}
+  turnLabel: {fileID: 1798472019}
 --- !u!1 &153114541
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,6 +1799,7 @@ MonoBehaviour:
   xWinsUI: {fileID: 1062700539}
   oWinsUI: {fileID: 543254509}
   catsGameUI: {fileID: 1982668458}
+  turnLabel: {fileID: 1798472017}
   xWins: 0
   oWins: 0
   draws: 0
@@ -2240,8 +2242,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4284375551
+  m_fontColor: {r: 1, g: 0.38039216, b: 0.36862746, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2450,8 +2452,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294231358
+  m_fontColor: {r: 0.24313726, g: 0.77254903, b: 0.95686275, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3014,8 +3016,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278255615
+  m_fontColor: {r: 1, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5195,11 +5197,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 153114545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1449, y: -46.897}
-  m_SizeDelta: {x: 400, y: 50}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -25, y: -50}
+  m_SizeDelta: {x: 500, y: 50}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1798472019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5254,7 +5256,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
