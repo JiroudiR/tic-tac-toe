@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public int xWins = 0;
     public int oWins = 0;
     public int draws = 0;
+    [SerializeField] private AudioClip clickSFX;
+    [SerializeField] private AudioClip victorySFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour
 
     public void GameButtonClicked(GameObject clickedButton)
     {
+        AudioSource.PlayClipAtPoint(clickSFX, transform.position, 1f);
         if (!gameOver)
         {
             GameButton gameButton = clickedButton.GetComponent<GameButton>();
@@ -224,6 +227,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver(Player winner)
     {
+        AudioSource.PlayClipAtPoint(victorySFX, transform.position, 1f);
         gameOver = true;
         turnLabel.SetActive(false);
         
