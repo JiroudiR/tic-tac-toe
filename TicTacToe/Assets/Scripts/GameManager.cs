@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,12 +20,15 @@ public class GameManager : MonoBehaviour
     public GameObject xWinsUI;
     public GameObject oWinsUI;
     public GameObject catsGameUI;
+    public GameObject quitPanel;
     public GameObject turnLabel;
     public int xWins = 0;
     public int oWins = 0;
     public int draws = 0;
+    private bool isPaused = false;
     [SerializeField] private AudioClip clickSFX;
     [SerializeField] private AudioClip victorySFX;
+    [SerializeField] private AudioClip catSFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +53,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = true;
+            quitPanel.SetActive(true);
+        }
     }
 
     private void InitializeData()
@@ -65,9 +73,9 @@ public class GameManager : MonoBehaviour
 
     public void GameButtonClicked(GameObject clickedButton)
     {
-        AudioSource.PlayClipAtPoint(clickSFX, transform.position, 1f);
         if (!gameOver)
         {
+            AudioSource.PlayClipAtPoint(clickSFX, transform.position, 1f);
             GameButton gameButton = clickedButton.GetComponent<GameButton>();
             int row = gameButton.row;
             int col = gameButton.col;
@@ -227,20 +235,39 @@ public class GameManager : MonoBehaviour
 
     private void GameOver(Player winner)
     {
-        AudioSource.PlayClipAtPoint(victorySFX, transform.position, 1f);
         gameOver = true;
         turnLabel.SetActive(false);
         
         if (winner == Player.X && gameOver)
         {
+            AudioSource.PlayClipAtPoint(victorySFX, transform.position, 1f);
             xWins++;
             xWinsUI.SetActive(true);
         }
         else if (winner == Player.O && gameOver)
         {
+            AudioSource.PlayClipAtPoint(victorySFX, transform.position, 1f);
             oWins++;
             oWinsUI.SetActive(true);
         }
+        else
+        {
+            AudioSource.PlayClipAtPoint(catSFX, transform.position, 1f);
+        }
         FindObjectOfType<UIManager>().UpdateWins();
+    }
+
+    public void Unpause()
+    {
+        if (isPaused)
+        {
+            isPaused = false;
+            quitPanel.SetActive(false);
+        }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
