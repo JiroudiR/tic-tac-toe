@@ -55,9 +55,16 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            isPaused = true;
-            quitPanel.SetActive(true);
-        }
+            if (!isPaused) 
+            {
+                isPaused = true;
+                quitPanel.SetActive(true);
+            } else if (isPaused)
+            {
+                isPaused = false;
+                quitPanel.SetActive(false);
+            }
+        }        
     }
 
     private void InitializeData()
